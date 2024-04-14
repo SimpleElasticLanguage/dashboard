@@ -7,11 +7,16 @@ import VueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    vue(),
-    vueJsx(),
-    VueDevTools(),
-  ],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://simpleelasticlanguage.com:9000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      }
+    }
+  },
+  plugins: [vue(), vueJsx(), VueDevTools()],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
